@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Database, Calendar, TrendingUp, FileText, BookOpen, Search } from "lucide-react";
-import { addAttendance, addScore, addQuestionPaper, addResource, getAllStudents } from "../api/studentApi";
+import { addAttendance, addScore, addQuestionPaper, addResource, getAllStudents, uploadFile } from "../api/studentApi";
 
 export default function ManageData() {
   const role = localStorage.getItem("role");
@@ -171,7 +171,7 @@ export default function ManageData() {
         fileUrl: resourceData.fileUrl,
         description: resourceData.description,
       });
-      setResourceData({ title: "", subject: "", department: "", semester: "", type: "", fileUrl: "", description: "" });
+      setResourceData({ title: "", subject: "", department: "", semester: "", type: "",uploadFile:"", description: "" });
       showMessage("✅ Resource added successfully!");
     } catch (err) {
       showMessage("❌ Error adding resource!");
@@ -378,12 +378,12 @@ export default function ManageData() {
                         required
                       >
                         <option value="">Grade</option>
-                        <option value="O">O</option>
-                        <option value="A+">A+</option>
+                        <option value="S">S</option>
                         <option value="A">A</option>
-                        <option value="B+">B+</option>
                         <option value="B">B</option>
                         <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
                         <option value="F">F</option>
                       </select>
                     </div>
