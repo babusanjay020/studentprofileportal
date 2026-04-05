@@ -1,5 +1,4 @@
-
-const BASE_URL = 'http://localhost:5000/api/students'
+const BASE_URL = 'https://studentprofileportal.onrender.com/api/students'
 
 export const registerStudent = async (data) => {
   const response = await fetch(`${BASE_URL}/register`, {
@@ -35,7 +34,7 @@ export const updateProfile = async (id, data) => {
 
 // Attendance APIs
 export const addAttendance = async (data) => {
-  const response = await fetch('http://localhost:5000/api/attendance/add', {
+  const response = await fetch('https://studentprofileportal.onrender.com/api/attendance/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -44,19 +43,20 @@ export const addAttendance = async (data) => {
 }
 
 export const getAttendance = async (studentId) => {
-  const response = await fetch(`http://localhost:5000/api/attendance/${studentId}`)
+  const response = await fetch(`https://studentprofileportal.onrender.com/api/attendance/${studentId}`)
   return response.json()
 }
 
 export const deleteAttendance = async (id) => {
-  const response = await fetch(`http://localhost:5000/api/attendance/${id}`, {
+  const response = await fetch(`https://studentprofileportal.onrender.com/api/attendance/${id}`, {
     method: 'DELETE'
   })
   return response.json()
 }
+
 // Score APIs
 export const addScore = async (data) => {
-  const response = await fetch('http://localhost:5000/api/scores/add', {
+  const response = await fetch('https://studentprofileportal.onrender.com/api/scores/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -65,19 +65,20 @@ export const addScore = async (data) => {
 }
 
 export const getScores = async (studentId) => {
-  const response = await fetch(`http://localhost:5000/api/scores/${studentId}`)
+  const response = await fetch(`https://studentprofileportal.onrender.com/api/scores/${studentId}`)
   return response.json()
 }
 
 export const deleteScore = async (id) => {
-  const response = await fetch(`http://localhost:5000/api/scores/${id}`, {
+  const response = await fetch(`https://studentprofileportal.onrender.com/api/scores/${id}`, {
     method: 'DELETE'
   })
   return response.json()
 }
+
 // Question Paper APIs
 export const addQuestionPaper = async (data) => {
-  const response = await fetch('http://localhost:5000/api/questionpapers/add', {
+  const response = await fetch('https://studentprofileportal.onrender.com/api/questionpapers/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -86,19 +87,20 @@ export const addQuestionPaper = async (data) => {
 }
 
 export const getQuestionPapers = async () => {
-  const response = await fetch('http://localhost:5000/api/questionpapers')
+  const response = await fetch('https://studentprofileportal.onrender.com/api/questionpapers')
   return response.json()
 }
 
 export const deleteQuestionPaper = async (id) => {
-  const response = await fetch(`http://localhost:5000/api/questionpapers/${id}`, {
+  const response = await fetch(`https://studentprofileportal.onrender.com/api/questionpapers/${id}`, {
     method: 'DELETE'
   })
   return response.json()
 }
+
 // Resource APIs
 export const addResource = async (data) => {
-  const response = await fetch('http://localhost:5000/api/resources/add', {
+  const response = await fetch('https://studentprofileportal.onrender.com/api/resources/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -107,33 +109,33 @@ export const addResource = async (data) => {
 }
 
 export const getResources = async () => {
-  const response = await fetch('http://localhost:5000/api/resources')
+  const response = await fetch('https://studentprofileportal.onrender.com/api/resources')
   return response.json()
 }
 
 export const deleteResource = async (id) => {
-  const response = await fetch(`http://localhost:5000/api/resources/${id}`, {
+  const response = await fetch(`https://studentprofileportal.onrender.com/api/resources/${id}`, {
     method: 'DELETE'
   })
   return response.json()
 }
+
 export const searchStudent = async (rollNumber) => {
-  const response = await fetch(`http://localhost:5000/api/students/search/${rollNumber}`)
+  const response = await fetch(`https://studentprofileportal.onrender.com/api/students/search/${rollNumber}`)
   return response.json()
 }
-// Get All Students
+
 export const getAllStudents = async () => {
-  const response = await fetch('http://localhost:5000/api/students/all')
+  const response = await fetch('https://studentprofileportal.onrender.com/api/students/all')
   return response.json()
 }
-// File Upload API
+
 export const uploadFile = async (file) => {
   const formData = new FormData()
   formData.append('file', file)
-  const response = await fetch('http://localhost:5000/api/upload', {
+  const response = await fetch('https://studentprofileportal.onrender.com/api/upload', {
     method: 'POST',
     body: formData
   })
   return response.json()
 }
-
