@@ -17,6 +17,7 @@ import StudentRegister from './pages/StudentRegister'
 import TeacherLogin from './pages/TeacherLogin'
 import TeacherRegister from './pages/TeacherRegister'
 import SearchStudent from './pages/SearchStudent'
+import Profile from './pages/Profile'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/editdata" element={<Layout><EditData /></Layout>} />
           <Route path="/managedata" element={<Layout><ManageData /></Layout>} />
           <Route path="/searchstudent" element={<Layout><SearchStudent /></Layout>} />
+          <Route path="/profile" element={<Layout><Profile /></Layout>} />
         </Routes>
       </Router>
       <Toaster />

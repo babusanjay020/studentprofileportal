@@ -26,6 +26,7 @@ const navItems = [
   { name: "Search Student", icon: Search, path: "/searchstudent", roles: ["teacher"] },
   { name: "Manage Data", icon: Database, path: "/managedata",roles:["teacher"] },
   { name: "Edit Data", icon: Pencil, path: "/editdata",roles:["teacher"] },
+  { name: "Profile", icon: User, path: "/profile", roles: ["student", "teacher"] },
 ];
 
 export default function Layout({ children }) {
