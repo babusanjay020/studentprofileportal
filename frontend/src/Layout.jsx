@@ -40,7 +40,7 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     if (studentId) {
-      fetch(`http://localhost:5000/api/students/profile/${studentId}`)
+      fetch(`https://studentprofileportal.onrender.com/api/students/profile/${studentId}`)
         .then(res => res.json())
         .then(data => setStudentName(data.name || "User"))
         .catch(() => setStudentName("User"));
