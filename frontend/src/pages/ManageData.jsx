@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Database, Calendar, TrendingUp, FileText, BookOpen, Search } from "lucide-react";
-import { addAttendance, addScore, addQuestionPaper, addResource, getAllStudents, uploadFile } from "../api/studentApi";
+import { addAttendance, addScore, addQuestionPaper, addResource, getAllStudents } from "../api/studentApi";
 
 export default function ManageData() {
   const role = localStorage.getItem("role");
@@ -21,7 +21,7 @@ export default function ManageData() {
     subject: "", totalClasses: ""
   });
   const [scoreData, setScoreData] = useState({
-    subject: "", totalMarks: "", semester: ""
+    subject: "", totalMarks: "", semester: "", examType: ""
   });
   const [paperData, setPaperData] = useState({
     subject: "", year: "", semester: "", department: "", fileUrl: "", description: ""
@@ -58,19 +58,19 @@ export default function ManageData() {
       return;
     }
     const filtered = allStudents
-  .filter(s => s.department === teacherDepartment && s.year === selectedYear)
-  .sort((a, b) => {
-    const getType = (roll) => {
-      const code = roll.substring(4, 6);
-      if (code === '31') return 1; // Regular first
-      if (code === '35') return 2; // Lateral entry after
-      return 3; // Others last
-    };
-    const typeA = getType(a.rollNumber);
-    const typeB = getType(b.rollNumber);
-    if (typeA !== typeB) return typeA - typeB;
-    return a.rollNumber.localeCompare(b.rollNumber);
-  });
+      .filter(s => s.department === teacherDepartment && s.year === selectedYear)
+      .sort((a, b) => {
+        const getType = (roll) => {
+          const code = roll.substring(4, 6);
+          if (code === '31') return 1;
+          if (code === '35') return 2;
+          return 3;
+        };
+        const typeA = getType(a.rollNumber);
+        const typeB = getType(b.rollNumber);
+        if (typeA !== typeB) return typeA - typeB;
+        return a.rollNumber.localeCompare(b.rollNumber);
+      });
     if (filtered.length === 0) {
       showMessage("❌ No students found for this department and year!");
     } else {
@@ -115,6 +115,10 @@ export default function ManageData() {
       showMessage("❌ Please search students first!");
       return;
     }
+    if (!scoreData.examType) {
+      showMessage("❌ Please select exam type!");
+      return;
+    }
     setLoading(true);
     try {
       await Promise.all(filteredStudents.map(student => {
@@ -127,9 +131,10 @@ export default function ManageData() {
           totalMarks: Number(scoreData.totalMarks),
           grade: grade,
           semester: Number(scoreData.semester),
+          examType: scoreData.examType,
         });
       }));
-      setScoreData({ subject: "", totalMarks: "", semester: "" });
+      setScoreData({ subject: "", totalMarks: "", semester: "", examType: "" });
       setIndividualScores({});
       showMessage(`✅ Scores added for ${filteredStudents.length} students!`);
     } catch (err) {
@@ -171,7 +176,7 @@ export default function ManageData() {
         fileUrl: resourceData.fileUrl,
         description: resourceData.description,
       });
-      setResourceData({ title: "", subject: "", department: "", semester: "", type: "",uploadFile:"", description: "" });
+      setResourceData({ title: "", subject: "", department: "", semester: "", type: "", fileUrl: "", description: "" });
       showMessage("✅ Resource added successfully!");
     } catch (err) {
       showMessage("❌ Error adding resource!");
@@ -290,7 +295,6 @@ export default function ManageData() {
                 <input type="number" placeholder="Total Classes" value={attendanceData.totalClasses}
                   onChange={(e) => setAttendanceData({ ...attendanceData, totalClasses: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2" required />
-
                 <div className="space-y-3">
                   <p className="text-sm font-medium text-slate-700">Enter attended classes for each student:</p>
                   {filteredStudents.map(student => (
@@ -317,7 +321,6 @@ export default function ManageData() {
                     </div>
                   ))}
                 </div>
-
                 <button type="submit" disabled={loading}
                   className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
                   {loading ? "Adding..." : `Add Attendance for ${filteredStudents.length} Students`}
@@ -335,6 +338,28 @@ export default function ManageData() {
               <p className="text-slate-500 text-sm">Please search students first!</p>
             ) : (
               <form onSubmit={handleAddScore} className="space-y-4">
+
+                {/* Exam Type */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Exam Type *</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {["Mid Exam 1", "Mid Exam 2", "Semester"].map(type => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setScoreData({ ...scoreData, examType: type })}
+                        className={`py-2 px-3 rounded-lg text-sm font-medium border transition-all ${
+                          scoreData.examType === type
+                            ? 'bg-indigo-600 text-white border-indigo-600'
+                            : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <input type="text" placeholder="Subject Name" value={scoreData.subject}
                   onChange={(e) => setScoreData({ ...scoreData, subject: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2" required />
@@ -392,7 +417,7 @@ export default function ManageData() {
 
                 <button type="submit" disabled={loading}
                   className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-                  {loading ? "Adding..." : `Add Scores for ${filteredStudents.length} Students`}
+                  {loading ? "Adding..." : `Add ${scoreData.examType || 'Scores'} for ${filteredStudents.length} Students`}
                 </button>
               </form>
             )}
