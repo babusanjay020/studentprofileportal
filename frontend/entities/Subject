@@ -1,0 +1,27 @@
+{
+  "name": "Subject",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Subject name"
+    },
+    "code": {
+      "type": "string",
+      "description": "Subject code"
+    },
+    "semester": {
+      "type": "number",
+      "description": "Semester number"
+    },
+    "credits": {
+      "type": "number",
+      "description": "Credit hours"
+    }
+  },
+  "required": [
+    "name",
+    "code",
+    "semester"
+  ]
+}

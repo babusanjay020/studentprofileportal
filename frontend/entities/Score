@@ -1,0 +1,74 @@
+{
+  "name": "Score",
+  "type": "object",
+  "properties": {
+    "student_email": {
+      "type": "string",
+      "description": "Student email"
+    },
+    "subject_name": {
+      "type": "string",
+      "description": "Subject name"
+    },
+    "subject_code": {
+      "type": "string",
+      "description": "Subject code"
+    },
+    "semester": {
+      "type": "number",
+      "description": "Semester number"
+    },
+    "internal_marks": {
+      "type": "number",
+      "description": "Internal assessment marks"
+    },
+    "external_marks": {
+      "type": "number",
+      "description": "External exam marks"
+    },
+    "total_marks": {
+      "type": "number",
+      "description": "Total marks obtained"
+    },
+    "max_marks": {
+      "type": "number",
+      "description": "Maximum possible marks"
+    },
+    "grade": {
+      "type": "string",
+      "enum": [
+        "O",
+        "A+",
+        "A",
+        "B+",
+        "B",
+        "C",
+        "D",
+        "F"
+      ],
+      "description": "Grade obtained"
+    },
+    "credits": {
+      "type": "number",
+      "description": "Subject credits"
+    },
+    "department": {
+      "type": "string",
+      "enum": [
+        "Computer Science",
+        "Civil",
+        "Mechanical",
+        "Electrical",
+        "Electronics"
+      ],
+      "description": "Department this record belongs to"
+    }
+  },
+  "required": [
+    "student_email",
+    "subject_name",
+    "semester",
+    "total_marks",
+    "max_marks"
+  ]
+}

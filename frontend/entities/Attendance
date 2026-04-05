@@ -1,0 +1,51 @@
+{
+  "name": "Attendance",
+  "type": "object",
+  "properties": {
+    "student_email": {
+      "type": "string",
+      "description": "Student email"
+    },
+    "subject_id": {
+      "type": "string",
+      "description": "Reference to subject"
+    },
+    "subject_name": {
+      "type": "string",
+      "description": "Subject name for display"
+    },
+    "total_classes": {
+      "type": "number",
+      "description": "Total classes held"
+    },
+    "attended_classes": {
+      "type": "number",
+      "description": "Classes attended"
+    },
+    "percentage": {
+      "type": "number",
+      "description": "Attendance percentage"
+    },
+    "semester": {
+      "type": "number",
+      "description": "Semester number"
+    },
+    "department": {
+      "type": "string",
+      "enum": [
+        "Computer Science",
+        "Civil",
+        "Mechanical",
+        "Electrical",
+        "Electronics"
+      ],
+      "description": "Department this record belongs to"
+    }
+  },
+  "required": [
+    "student_email",
+    "subject_name",
+    "total_classes",
+    "attended_classes"
+  ]
+}

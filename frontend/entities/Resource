@@ -1,0 +1,57 @@
+{
+  "name": "Resource",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Resource title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description"
+    },
+    "subject_name": {
+      "type": "string",
+      "description": "Related subject"
+    },
+    "semester": {
+      "type": "number",
+      "description": "Semester number"
+    },
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "Notes",
+        "Video",
+        "Book",
+        "Website",
+        "Tutorial",
+        "Syllabus"
+      ],
+      "description": "Type of resource"
+    },
+    "url": {
+      "type": "string",
+      "description": "Link to the resource"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "Uploaded file URL"
+    },
+    "department": {
+      "type": "string",
+      "enum": [
+        "Computer Science",
+        "Civil",
+        "Mechanical",
+        "Electrical",
+        "Electronics"
+      ],
+      "description": "Department this resource belongs to"
+    }
+  },
+  "required": [
+    "title",
+    "resource_type"
+  ]
+}

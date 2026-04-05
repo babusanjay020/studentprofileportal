@@ -1,0 +1,58 @@
+{
+  "name": "QuestionPaper",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Paper title"
+    },
+    "subject_name": {
+      "type": "string",
+      "description": "Subject name"
+    },
+    "subject_code": {
+      "type": "string",
+      "description": "Subject code"
+    },
+    "semester": {
+      "type": "number",
+      "description": "Semester number"
+    },
+    "year": {
+      "type": "number",
+      "description": "Exam year"
+    },
+    "exam_type": {
+      "type": "string",
+      "enum": [
+        "Mid-Term",
+        "End-Term",
+        "Supplementary",
+        "Internal"
+      ],
+      "description": "Type of examination"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL to the question paper PDF"
+    },
+    "department": {
+      "type": "string",
+      "enum": [
+        "Computer Science",
+        "Civil",
+        "Mechanical",
+        "Electrical",
+        "Electronics"
+      ],
+      "description": "Department this paper belongs to"
+    }
+  },
+  "required": [
+    "title",
+    "subject_name",
+    "semester",
+    "year",
+    "exam_type"
+  ]
+}
