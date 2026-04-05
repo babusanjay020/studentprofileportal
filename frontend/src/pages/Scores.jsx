@@ -93,12 +93,12 @@ export default function Scores() {
 
   const getGradeColor = (grade) => {
     const colors = {
-      'O': 'bg-purple-100 text-purple-700',
-      'A+': 'bg-green-100 text-green-700',
-      'A': 'bg-blue-100 text-blue-700',
-      'B+': 'bg-yellow-100 text-yellow-700',
-      'B': 'bg-orange-100 text-orange-700',
-      'C': 'bg-red-100 text-red-700',
+      's': 'bg-purple-100 text-purple-700',
+      'A': 'bg-green-100 text-green-700',
+      'B': 'bg-blue-100 text-blue-700',
+      'C': 'bg-yellow-100 text-yellow-700',
+      'D': 'bg-orange-100 text-orange-700',
+      'E': 'bg-red-100 text-red-700',
       'F': 'bg-red-200 text-red-800',
     }
     return colors[grade] || 'bg-slate-100 text-slate-700'
@@ -172,12 +172,12 @@ export default function Scores() {
                 required
               >
                 <option value="">Select Grade</option>
-                <option value="O">O (Outstanding)</option>
-                <option value="A+">A+ (Excellent)</option>
-                <option value="A">A (Very Good)</option>
-                <option value="B+">B+ (Good)</option>
-                <option value="B">B (Above Average)</option>
-                <option value="C">C (Average)</option>
+                <option value="S">S (Superior)</option>
+                <option value="A">A (Excellent)</option>
+                <option value="B">B(Very Good)</option>
+                <option value="C">C (Good)</option>
+                <option value="D">D (Above Average)</option>
+                <option value="E">E (Average)</option>
                 <option value="F">F (Fail)</option>
               </select>
               <input
