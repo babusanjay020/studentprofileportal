@@ -61,8 +61,8 @@ export default function EditData() {
       ]);
       setAttendance(att);
       setScores(sc);
-      setPapers(pp);
-      setResources(rs);
+      setPapers(pp.filter(p => p.department === teacherDepartment));
+      setResources(rs.filter(r => r.department === teacherDepartment));
     } catch (err) {
       console.error(err);
     }
