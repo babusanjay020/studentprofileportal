@@ -110,71 +110,74 @@ export default function Dashboard() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Stats Cards - Student Only */}
+{student.role === 'student' && (
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          {/* Overall Attendance */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <div className="flex items-center gap-2 mb-4">
-              <Calendar className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-bold text-slate-800">Attendance</h2>
-            </div>
-            {attendance.length === 0 ? (
-              <p className="text-slate-500 text-sm">No records yet!</p>
-            ) : (
-              <>
-                <p className={`text-4xl font-bold mb-2 ${Number(avgAttendance) >= 75 ? 'text-green-600' : 'text-red-600'}`}>
-                  {avgAttendance}%
-                </p>
-                <div className="w-full bg-slate-100 rounded-full h-3">
-                  <div
-                    className={`h-3 rounded-full ${Number(avgAttendance) >= 75 ? 'bg-green-500' : 'bg-red-500'}`}
-                    style={{ width: `${avgAttendance}%` }}
-                  />
-                </div>
-                <p className="text-xs text-slate-500 mt-2">
-                  {Number(avgAttendance) >= 75 ? '✅ Good attendance' : '⚠️ Low attendance'}
-                </p>
-              </>
-            )}
+    {/* Overall Attendance */}
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+      <div className="flex items-center gap-2 mb-4">
+        <Calendar className="w-5 h-5 text-blue-600" />
+        <h2 className="text-lg font-bold text-slate-800">Attendance</h2>
+      </div>
+      {attendance.length === 0 ? (
+        <p className="text-slate-500 text-sm">No records yet!</p>
+      ) : (
+        <>
+          <p className={`text-4xl font-bold mb-2 ${Number(avgAttendance) >= 75 ? 'text-green-600' : 'text-red-600'}`}>
+            {avgAttendance}%
+          </p>
+          <div className="w-full bg-slate-100 rounded-full h-3">
+            <div
+              className={`h-3 rounded-full ${Number(avgAttendance) >= 75 ? 'bg-green-500' : 'bg-red-500'}`}
+              style={{ width: `${avgAttendance}%` }}
+            />
           </div>
+          <p className="text-xs text-slate-500 mt-2">
+            {Number(avgAttendance) >= 75 ? '✅ Good attendance' : '⚠️ Low attendance'}
+          </p>
+        </>
+      )}
+    </div>
 
-          {/* CGPA */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="w-5 h-5 text-emerald-600" />
-              <h2 className="text-lg font-bold text-slate-800">CGPA</h2>
+    {/* CGPA */}
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+      <div className="flex items-center gap-2 mb-4">
+        <TrendingUp className="w-5 h-5 text-emerald-600" />
+        <h2 className="text-lg font-bold text-slate-800">CGPA</h2>
+      </div>
+      {semesterScores.length === 0 ? (
+        <p className="text-slate-500 text-sm">No records yet!</p>
+      ) : (
+        <>
+          <p className="text-4xl font-bold text-indigo-600 mb-2">{getCGPA()}</p>
+          <p className="text-xs text-slate-500">Cumulative GPA</p>
+        </>
+      )}
+    </div>
+
+    {/* SGPA per Semester */}
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+      <div className="flex items-center gap-2 mb-4">
+        <TrendingUp className="w-5 h-5 text-violet-600" />
+        <h2 className="text-lg font-bold text-slate-800">SGPA</h2>
+      </div>
+      {semesters.length === 0 ? (
+        <p className="text-slate-500 text-sm">No records yet!</p>
+      ) : (
+        <div className="space-y-2">
+          {semesters.map(sem => (
+            <div key={sem} className="flex justify-between items-center p-2 bg-slate-50 rounded-lg">
+              <span className="text-sm text-slate-600">Semester {sem}</span>
+              <span className="font-bold text-indigo-600">{getSGPA(sem)}</span>
             </div>
-            {semesterScores.length === 0 ? (
-              <p className="text-slate-500 text-sm">No records yet!</p>
-            ) : (
-              <>
-                <p className="text-4xl font-bold text-indigo-600 mb-2">{getCGPA()}</p>
-                <p className="text-xs text-slate-500">Cumulative GPA</p>
-              </>
-            )}
-          </div>
-
-          {/* SGPA per Semester */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="w-5 h-5 text-violet-600" />
-              <h2 className="text-lg font-bold text-slate-800">SGPA</h2>
-            </div>
-            {semesters.length === 0 ? (
-              <p className="text-slate-500 text-sm">No records yet!</p>
-            ) : (
-              <div className="space-y-2">
-                {semesters.map(sem => (
-                  <div key={sem} className="flex justify-between items-center p-2 bg-slate-50 rounded-lg">
-                    <span className="text-sm text-slate-600">Semester {sem}</span>
-                    <span className="font-bold text-indigo-600">{getSGPA(sem)}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
+          ))}
         </div>
+      )}
+    </div>
+
+  </div>
+)}
 
         {/* Quick Links */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
