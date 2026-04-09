@@ -35,16 +35,19 @@ export default function Dashboard() {
     }
   };
 
-  // Calculate overall attendance
+  // Overall attendance
   const avgAttendance = attendance.length > 0
     ? (attendance.reduce((sum, a) => sum + a.percentage, 0) / attendance.length).toFixed(1)
     : 0;
 
-  // Calculate SGPA for each semester
+  // Grade points
   const gradePoints = { 'S': 10, 'A': 9, 'B': 8, 'C': 7, 'D': 6, 'E': 5, 'F': 0 };
+
+  // Semester scores only
   const semesterScores = scores.filter(s => s.examType === 'Semester');
   const semesters = [...new Set(semesterScores.map(s => s.semester))].sort();
 
+  // SGPA per semester
   const getSGPA = (sem) => {
     const semScores = semesterScores.filter(s => s.semester === sem);
     if (semScores.length === 0) return 'N/A';
@@ -52,14 +55,11 @@ export default function Dashboard() {
     return (total / semScores.length).toFixed(2);
   };
 
-  // Mid exam scores
-  const midExam1Scores = scores.filter(s => s.examType === 'Mid Exam 1');
-  const midExam2Scores = scores.filter(s => s.examType === 'Mid Exam 2');
-
-  const getMidAvg = (midScores) => {
-    if (midScores.length === 0) return 'N/A';
-    const total = midScores.reduce((sum, s) => sum + (s.marks / s.totalMarks * 100), 0);
-    return (total / midScores.length).toFixed(1);
+  // CGPA overall
+  const getCGPA = () => {
+    if (semesterScores.length === 0) return 'N/A';
+    const total = semesterScores.reduce((sum, s) => sum + (gradePoints[s.grade] || 0), 0);
+    return (total / semesterScores.length).toFixed(2);
   };
 
   if (!student) {
@@ -109,157 +109,71 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Attendance Summary */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2 mb-4">
-            <Calendar className="w-5 h-5 text-blue-600" />
-            <h2 className="text-lg font-bold text-slate-800">Attendance Summary</h2>
-          </div>
-          {attendance.length === 0 ? (
-            <p className="text-slate-500 text-sm">No attendance records yet!</p>
-          ) : (
-            <>
-              {/* Overall */}
-              <div className="mb-4 p-4 bg-blue-50 rounded-xl">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium text-slate-700">Overall Attendance</span>
-                  <span className={`text-lg font-bold ${Number(avgAttendance) >= 75 ? 'text-green-600' : 'text-red-600'}`}>
-                    {avgAttendance}%
-                  </span>
-                </div>
-                <div className="w-full bg-slate-200 rounded-full h-3">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          {/* Overall Attendance */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div className="flex items-center gap-2 mb-4">
+              <Calendar className="w-5 h-5 text-blue-600" />
+              <h2 className="text-lg font-bold text-slate-800">Attendance</h2>
+            </div>
+            {attendance.length === 0 ? (
+              <p className="text-slate-500 text-sm">No records yet!</p>
+            ) : (
+              <>
+                <p className={`text-4xl font-bold mb-2 ${Number(avgAttendance) >= 75 ? 'text-green-600' : 'text-red-600'}`}>
+                  {avgAttendance}%
+                </p>
+                <div className="w-full bg-slate-100 rounded-full h-3">
                   <div
                     className={`h-3 rounded-full ${Number(avgAttendance) >= 75 ? 'bg-green-500' : 'bg-red-500'}`}
                     style={{ width: `${avgAttendance}%` }}
                   />
                 </div>
-              </div>
+                <p className="text-xs text-slate-500 mt-2">
+                  {Number(avgAttendance) >= 75 ? '✅ Good attendance' : '⚠️ Low attendance'}
+                </p>
+              </>
+            )}
+          </div>
 
-              {/* Subject wise */}
-              <div className="space-y-3">
-                {attendance.map(item => (
-                  <div key={item._id} className="flex items-center gap-3">
-                    <p className="text-sm text-slate-600 w-36 truncate">{item.subject}</p>
-                    <div className="flex-1 bg-slate-100 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full ${item.percentage >= 75 ? 'bg-green-500' : 'bg-red-500'}`}
-                        style={{ width: `${item.percentage}%` }}
-                      />
-                    </div>
-                    <span className={`text-sm font-medium w-12 text-right ${item.percentage >= 75 ? 'text-green-600' : 'text-red-600'}`}>
-                      {item.percentage}%
-                    </span>
+          {/* CGPA */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp className="w-5 h-5 text-emerald-600" />
+              <h2 className="text-lg font-bold text-slate-800">CGPA</h2>
+            </div>
+            {semesterScores.length === 0 ? (
+              <p className="text-slate-500 text-sm">No records yet!</p>
+            ) : (
+              <>
+                <p className="text-4xl font-bold text-indigo-600 mb-2">{getCGPA()}</p>
+                <p className="text-xs text-slate-500">Cumulative GPA</p>
+              </>
+            )}
+          </div>
+
+          {/* SGPA per Semester */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp className="w-5 h-5 text-violet-600" />
+              <h2 className="text-lg font-bold text-slate-800">SGPA</h2>
+            </div>
+            {semesters.length === 0 ? (
+              <p className="text-slate-500 text-sm">No records yet!</p>
+            ) : (
+              <div className="space-y-2">
+                {semesters.map(sem => (
+                  <div key={sem} className="flex justify-between items-center p-2 bg-slate-50 rounded-lg">
+                    <span className="text-sm text-slate-600">Semester {sem}</span>
+                    <span className="font-bold text-indigo-600">{getSGPA(sem)}</span>
                   </div>
                 ))}
               </div>
-            </>
-          )}
-        </div>
-
-        {/* Scores Summary */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-5 h-5 text-emerald-600" />
-            <h2 className="text-lg font-bold text-slate-800">Scores Summary</h2>
+            )}
           </div>
-          {scores.length === 0 ? (
-            <p className="text-slate-500 text-sm">No scores yet!</p>
-          ) : (
-            <div className="space-y-6">
 
-              {/* Mid Exam 1 */}
-              {midExam1Scores.length > 0 && (
-                <div>
-                  <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-semibold text-slate-700">Mid Exam 1</h3>
-                    <span className="text-sm font-medium text-indigo-600">Avg: {getMidAvg(midExam1Scores)}%</span>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {midExam1Scores.map(item => (
-                      <div key={item._id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                        <div>
-                          <p className="font-medium text-slate-800 text-sm">{item.subject}</p>
-                          <p className="text-xs text-slate-500">Sem {item.semester}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold text-slate-800">{item.marks}/{item.totalMarks}</p>
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                            item.grade === 'S' ? 'bg-purple-100 text-purple-700' :
-                            item.grade === 'A' ? 'bg-green-100 text-green-700' :
-                            item.grade === 'F' ? 'bg-red-100 text-red-700' :
-                            'bg-blue-100 text-blue-700'
-                          }`}>{item.grade}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Mid Exam 2 */}
-              {midExam2Scores.length > 0 && (
-                <div>
-                  <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-semibold text-slate-700">Mid Exam 2</h3>
-                    <span className="text-sm font-medium text-indigo-600">Avg: {getMidAvg(midExam2Scores)}%</span>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {midExam2Scores.map(item => (
-                      <div key={item._id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                        <div>
-                          <p className="font-medium text-slate-800 text-sm">{item.subject}</p>
-                          <p className="text-xs text-slate-500">Sem {item.semester}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold text-slate-800">{item.marks}/{item.totalMarks}</p>
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                            item.grade === 'S' ? 'bg-purple-100 text-purple-700' :
-                            item.grade === 'A' ? 'bg-green-100 text-green-700' :
-                            item.grade === 'F' ? 'bg-red-100 text-red-700' :
-                            'bg-blue-100 text-blue-700'
-                          }`}>{item.grade}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Semester Results with SGPA */}
-              {semesters.length > 0 && (
-                <div>
-                  <h3 className="font-semibold text-slate-700 mb-3">Semester Results</h3>
-                  {semesters.map(sem => (
-                    <div key={sem} className="mb-4">
-                      <div className="flex justify-between items-center mb-2 p-3 bg-indigo-50 rounded-lg">
-                        <span className="font-medium text-indigo-800">Semester {sem}</span>
-                        <span className="text-lg font-bold text-indigo-600">SGPA: {getSGPA(sem)}</span>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {semesterScores.filter(s => s.semester === sem).map(item => (
-                          <div key={item._id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                            <div>
-                              <p className="font-medium text-slate-800 text-sm">{item.subject}</p>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-bold text-slate-800">{item.marks}/{item.totalMarks}</p>
-                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                                item.grade === 'S' ? 'bg-purple-100 text-purple-700' :
-                                item.grade === 'A' ? 'bg-green-100 text-green-700' :
-                                item.grade === 'F' ? 'bg-red-100 text-red-700' :
-                                'bg-blue-100 text-blue-700'
-                              }`}>{item.grade}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
-          )}
         </div>
 
         {/* Quick Links */}
