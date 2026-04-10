@@ -93,6 +93,23 @@ export default function Dashboard() {
             <GraduationCap className="w-32 h-32" />
           </div>
         </div>
+        <div className="relative z-10 flex items-center gap-4">
+  {/* Profile Picture */}
+  <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white/30 flex-shrink-0">
+    {student?.profilePic ? (
+      <img src={student.profilePic} alt="Profile" className="w-full h-full object-cover" />
+    ) : (
+      <div className="w-full h-full bg-white/20 flex items-center justify-center text-white text-2xl font-bold">
+        {student?.name?.[0]?.toUpperCase()}
+      </div>
+    )}
+  </div>
+  <div>
+    <p className="text-indigo-200 text-sm font-medium mb-1">Welcome back,</p>
+    <h1 className="text-3xl font-bold mb-2">{student.name}</h1>
+    <p className="text-indigo-200">Roll No: {student.rollNumber} | {student.department}</p>
+  </div>
+</div>
 
         {/* Student Info */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
