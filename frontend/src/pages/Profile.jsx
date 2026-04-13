@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Mail, Phone, BookOpen, Save } from "lucide-react";
 import { toast } from "sonner";
-import { getProfile, updateProfile, uploadFile } from "../api/studentApi";
+import { getProfile, updateProfile } from "../api/studentApi";
 
 export default function Profile() {
   const [student, setStudent] = useState(null);
@@ -91,35 +91,8 @@ export default function Profile() {
           {/* Profile Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-violet-600 p-6">
             <div className="flex items-center gap-4">
-              <div className="relative">
-  <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white/30">
-    {student?.profilePic ? (
-      <img src={student.profilePic} alt="Profile" className="w-full h-full object-cover" />
-    ) : (
-      <div className="w-full h-full bg-white/20 flex items-center justify-center text-white text-3xl font-bold">
-        {student?.name?.[0]?.toUpperCase()}
-      </div>
-    )}
-  </div>
-  <label className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full flex items-center justify-center cursor-pointer shadow-lg">
-    <input
-      type="file"
-      accept="image/*"
-      className="hidden"
-      onChange={async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const data = await uploadFile(file);
-          if (data.fileUrl) {
-            setFormData({ ...formData, profilePic: data.fileUrl });
-            await updateProfile(studentId, { profilePic: data.fileUrl });
-            setStudent({ ...student, profilePic: data.fileUrl });
-          }
-        }
-      }}
-    />
-    <span className="text-indigo-600 text-xs">✏️</span>
-  </label>
+              <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center text-white text-3xl font-bold border-4 border-white/30">
+  {student?.name?.[0]?.toUpperCase()}
 </div>
               <div>
                 <h2 className="text-xl font-bold text-white">{student?.name}</h2>
