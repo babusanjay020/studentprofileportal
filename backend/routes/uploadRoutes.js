@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const multer = require('multer')
 const cloudinary = require('cloudinary').v2
-const { CloudinaryStorage } = require('multer-storage-cloudinary')
 
 // Configure Cloudinary
 cloudinary.config({
@@ -11,24 +10,33 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
-// Configure Multer with Cloudinary Storage
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'studentportal',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'pdf'],
-    resource_type: 'auto'
-  }
-})
-
+// Use memory storage instead
+const storage = multer.memoryStorage()
 const upload = multer({ storage })
 
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
   try {
-    const fileUrl = req.file.path
-    res.json({ fileUrl })
+    if (!req.file) {
+      return res.status(400).json({ message: '❌ No file uploaded' })
+    }
+
+    // Convert buffer to base64
+    const fileStr = req.file.buffer.toString('base64')
+    const fileType = req.file.mimetype
+
+    // Upload to Cloudinary
+    const uploadResponse = await cloudinary.uploader.upload(
+      `data:${fileType};base64,${fileStr}`,
+      {
+        folder: 'studentportal',
+        resource_type: 'auto'
+      }
+    )
+
+    res.json({ fileUrl: uploadResponse.secure_url })
   } catch (err) {
-    res.status(500).json({ message: '❌ Error uploading file' })
+    console.log('Upload error:', err)
+    res.status(500).json({ message: '❌ Error uploading file', error: err.message })
   }
 })
 
